@@ -1,0 +1,17 @@
+.profile-icon {
+    height: 40px;
+    width: 40px;
+}
+
+.no-border-card {
+    border: 0;
+}
+
+.card-footer {
+    background-color: white;
+}
+
+.tag {
+    text-decoration: none;
+    color: white;
+}
