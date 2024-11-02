@@ -1,8 +1,10 @@
+{% load static %}
+
 <div class="card mb-3">
     <div class="row g-0">
         <div class="col-md-2">
             <div class="card-body">
-                <img src="https://www.linux.org.ru/tango/img/opensource-logo.png" class="rounded"
+                <img src={% static "avatar.png"%} class="rounded"
                     style="max-width:100%; width:5em;">
                 <input class="form-control" type="number">
             </div>

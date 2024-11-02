@@ -24,14 +24,18 @@ for i in range(30):
 
 def paginate(objects_list, request, per_page=10):
     p = Paginator(objects_list, 10)
-    number = int(request.GET.get("page", 1))
-    print("GET page ", number)
+    try:
+        number = int(request.GET.get("page", 1))
+        if number > p.num_pages + 1 or number < 1:
+            raise Exception()
+        current_page = p.get_page(number)
+    except:
+        number = 1
+        current_page = p.get_page(number)
     result = {
             "has_previous": False,
             "has_next": False,
-        }
-    current_page = p.get_page(number)
-    print(current_page)
+    }
     result["page"] = current_page
     result["current_page"] = current_page.number
     if current_page.has_previous() == True:
@@ -41,48 +45,12 @@ def paginate(objects_list, request, per_page=10):
         result["has_next"] = True
         result["next_page"] = current_page.next_page_number()
     return result
-    try:
-        number = int(request.GET.get("page", 1))
-        print("GET page ", number)
-        result = {
-            "has_previous": False,
-            "has_next": False,
-        }
-        current_page = p.get_page(number)
-        print(current_page)
-        result["page"] = current_page
-        result["current_page"] = current_page.number(),
-        if current_page.has_previous() == True:
-            result["has_previous"] = True
-            result["previous_page"] = current_page.previous_page_number()
-        if current_page.has_next() == True:
-            result["has_next"] = True
-            result["next_page"] = current_page.next_page_number()
-        return result
-    except:
-        number = 1
-        result = {
-            "current_page": number,
-            "has_previous": False,
-            "has_next": False,
-        }
-        current_page = p.get_page(number)
-        result["page"] = current_page
-        if current_page.has_previous():
-            result["has_previous"] = True
-            result["previous_page"] = current_page.previous_page_number()
-        if current_page.has_next():
-            result["has_next"] = True
-            result["next_page"] = current_page.next_page_number()
-        return result
 
 
 def questions_catalog(request):
     page = paginate(questions, request)
     data = []
-    print(page["page"])
     p = tuple(page["page"].object_list)
-    print(p)
     for i in range(len(p)):
         data.append({
             "question": p[i],
