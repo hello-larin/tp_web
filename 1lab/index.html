@@ -11,33 +11,46 @@
 </head>
 
 <body>
-    <header class="navbar py-3 mb-4 border-bottom">
-        <div class="container-fluid">
-            <a href="./index.html" class="navbar-brand">AskLarin</a>
+    <header class="container my-3">
+        <div class="row align-items-center">
+            <div class="col-auto px-3">
+                <a href="./index.html" class="navbar-brand">AskLarin</a>
+            </div>
+            <div class="col">
+                <form action="">
+                    <input type="search" class="search-input form-control mb-auto" placeholder="Questions, tags, users">
+                </form>
+            </div>
+            <div class="col-auto">
+                <a class="btn btn-outline-primary" href="./new_question.html">Задать вопрос</a>
+            </div>
+            <div class="col-auto">
+                <div class="row align-items-center">
+                    <div class="col-auto">
+                        <img src="https://www.linux.org.ru/tango/img/opensource-logo.png"
+                            class="nav-brand profile-icon">Dr Peper
+                    </div>
+                    <div class="col-auto">
+                        <a href="./setting.html">Settings</a>
+                    </div>
+                    <div class="col-auto">
+                        <a href="./login.html">Logout</a>
+                    </div>
 
-            <form action="" class="d-flex justify-content-center mx-auto">
-                <input type="search" class="search-input form-control mb-auto" placeholder="Questions, tags, users">
-                <button class="search-button btn btn-outline-primary">Search</button>
-            </form>
-            <ul class="nav nav-pills">
-                <li class="nav-item"><img src="https://www.linux.org.ru/tango/img/opensource-logo.png"
-                        class="nav-brand profile-icon">Dr Peper</li>
-
-                <li class="nav-item"><a href="./setting.html" class="nav-link">Settings</a></li>
-                <li class="nav-item"><a href="./login.html" class="nav-link">Logout</a></li>
-                </li>
-            </ul>
+                </div>
+            </div>
         </div>
+        <hr>
     </header>
     <div class="container">
         <div class="row">
             <div class="card mb-3 no-border-card">
                 <div class="card-body">
-                    <div class="row">
+                    <div class="row align-items-center">
                         <div class="col-md-auto">
                             <h5 class="card-title">Новые запросы</h5>
                         </div>
-                        <div class="col"><a href="./new_question.html">Популярные запросы</a></div>
+                        <div class="col"><a href="#">Популярные запросы</a></div>
                     </div>
                 </div>
             </div>
