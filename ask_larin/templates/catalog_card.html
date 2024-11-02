@@ -4,27 +4,27 @@
     <div class="row g-0">
         <div class="col-md-2">
             <div class="card-body">
-                <img src={% static 'avatar.png' %} class="rounded"
+                <img src="{{ data.profile.image.url }}" class="rounded"
                     style="max-width:100%; width:4em;">
-                <input class="form-control" type="number">
+                <input class="form-control" type="number" value="{{data.rating}}">
             </div>
 
         </div>
         <div class="col-md-10">
             <div class="card-body">
-                <h5 class="card-title"><a href={%url 'question' data.question.id%}>{{data.question.title}}</a></h5>
-                <p class="card-text">{{data.question.text}}</p>
+                <h5 class="card-title"><a href={%url 'question' data.id%}>{{data.title}}</a></h5>
+                <p class="card-text">{{data.description}}</p>
             </div>
             <div class="card-footer">
                 <div class="row">
                     <div class="col-md-3">
-                        <a href={% url 'question' data.question.id %} class="btn btn-outline-primary">
+                        <a href={% url 'question' data.id %} class="btn btn-outline-primary">
                             Ответов <span class="badge text-bg-primary">{{data.answers_amount}}</span>
                         </a>
                     </div>
                     <div class="col-md-9">
-                        {% for tag in data.question.tags%}
-                        <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag %} class="tag">{{tag}}</a></span>
+                        {% for tag in data.tags.all %}
+                        <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag.name %} class="tag">{{tag.name}}</a></span>
                         {% endfor %}
                     </div>
                 </div>

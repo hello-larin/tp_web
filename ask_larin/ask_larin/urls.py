@@ -17,6 +17,8 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from ask import views
+from ask_larin import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -29,3 +31,6 @@ urlpatterns = [
     path('settings', views.settings, name='settings'),
     path('new_question', views.new_question, name='new_question')
 ]
+
+if settings.DEBUG:  
+    urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.core.paginator import Paginator
 import copy
+from ask.models import *
+from django.db.models import *
 
 questions = []
 for i in range(1,30):
@@ -48,56 +50,43 @@ def paginate(objects_list, request, per_page=10):
 
 
 def questions_catalog(request):
-    page = paginate(questions, request)
-    data = []
-    p = tuple(page["page"].object_list)
-    for i in range(len(p)):
-        data.append({
-            "question": p[i],
-            "answers_amount": len(answers[p[i]['id']])
-        })
+    question = Question.objects.new_questions()
+    page = paginate(question, request)
+    print(page["page"].object_list)
+    for i in page["page"].object_list:
+        print(i.profile.image)
     return render(request, 'index.html', {
-        'data': data,
+        'data': page["page"].object_list,
         'page': page,
         'login': True
     })
 
 def hot_questions_catalog(request):
-    h_q = copy.deepcopy(questions)
-    h_q.reverse()
-    page = paginate(h_q, request)
-    data = []
-    p = tuple(page['page'].object_list)
-    for i in range(len(p)):
-        data.append({
-            "question": p[i],
-            "answers_amount": len(answers[p[i]['id']])
-        })
+    question = Question.objects.hot_questions()
+    page = paginate(question, request)
+    print(page["page"].object_list)
     return render(request, 'index.html', {
-        'data': data,
+        'data': page["page"].object_list,
         'page': page,
-        'hot': True
+        'hot': True,
     })
 
 def tag(request, tag):
-    data = []
-    for i in questions:
-        if tag in i['tags']:
-            data.append({
-                "question": i,
-                "answers_amount": len(answers[i['id']])
-            })
-    page = paginate(data, request)
+    question = Question.objects.tag_questions(tag)
+    page = paginate(question, request)
+    print(page["page"].object_list)
     return render(request, 'index.html', {
-        'data': data,
+        'data': page["page"].object_list,
         'page': page
     })
 
 def question(request, id):
+    answers = Answer.objects.question_answers(id)
+    question = Question.objects.get(id=id)
     return render(request, 'question.html', {
-        'title': questions[id-1]['title'],
-        'question': questions[id-1],
-        'answers': answers[id-1]
+        'title': question.title,
+        'question': question,
+        'answers': answers
     })
 
 def login(request):

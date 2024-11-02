@@ -4,21 +4,20 @@
     <div class="row g-0">
         <div class="col-md-3">
             <div class="card-body">
-                <img src={%static "avatar.png"%} class="rounded"
-                    style="width:9rem; max-width:100%">
-                <input class="form-control" type="number">
+                <img src="{{ data.profile.image.url }}" class="rounded" style="width:9rem; max-width:100%">
+                <input class="form-control" type="number" value="{{data.rating}}">
             </div>
 
         </div>
         <div class="col-md-9">
             <div class="card-body">
                 <h5 class="card-title">{{data.title}}</h5>
-                <p class="card-text">{{data.text}}</p>
+                <p class="card-text">{{data.description}}</p>
             </div>
             <div class="card-footer">
                 <p class="card-text">Теги:
-                    {% for tag in data.tags%}
-                    <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag %} class="tag">{{tag}}</a></span>
+                    {% for tag in data.tags.all %}
+                    <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag.name %} class="tag">{{tag.name}}</a></span>
                     {% endfor %}
                 </p>
             </div>
