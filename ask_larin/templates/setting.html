@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}
+Настройки
+{% endblock %}
+{% block content %}
+<div class="card mb-3 no-border-card">
+    <div class="card-body">
+        <h5 class="card-title">Настройка аккаунта Dr.Peper</h5>
+        <form>
+            <div class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Login</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputlogin">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Email</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputemail">
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Nickname</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputnickname">
+                </div>
+            </fieldset>
+            <div class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0"></legend>
+                <div class="col-sm-9">
+                    <img class="rounded" src="https://www.linux.org.ru/tango/img/opensource-logo.png">
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Аватар</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" type="file" id="inputfile">
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-outline-primary">Сохранить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

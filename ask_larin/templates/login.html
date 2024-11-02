@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% block title %}
+Авторизация
+{% endblock %}
+{% block content %}
+<div class="card mb-3 no-border-card">
+    <div class="card-body">
+        <h5 class="card-title">Вход</h5>
+        <div class="card border-danger mb-3">
+            <div class="card-body">
+                <p class="card-text">Неверный пароль</p>
+            </div>
+        </div <form>
+        <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-3 pt-0">Логин</legend>
+            <div class="col-sm-9">
+                <input class="form-control" id="inputlogin">
+            </div>
+        </fieldset>
+        <fieldset class="row mb-3">
+            <legend class="col-form-label col-sm-3 pt-0">Пароль</legend>
+            <div class="col-sm-9">
+                <input class="form-control" id="inputpassword" type="password">
+            </div>
+        </fieldset>
+        <button type="submit" class="btn btn-outline-primary">Вход</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

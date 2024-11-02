@@ -1,0 +1,25 @@
+<div class="card mb-3 no-border-card">
+    <div class="row g-0">
+        <div class="col-md-3">
+            <div class="card-body">
+                <img src="https://www.linux.org.ru/tango/img/opensource-logo.png" class="rounded"
+                    style="width:9rem; max-width:100%">
+                <input class="form-control" type="number">
+            </div>
+
+        </div>
+        <div class="col-md-9">
+            <div class="card-body">
+                <h5 class="card-title">{{data.title}}</h5>
+                <p class="card-text">{{data.text}}</p>
+            </div>
+            <div class="card-footer">
+                <p class="card-text">Теги:
+                    {% for tag in data.tags%}
+                    <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag %} class="tag">{{tag}}</a></span>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

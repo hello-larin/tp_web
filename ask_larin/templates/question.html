@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+title
+{% endblock %}
+{% block content %}
+{% include 'question_card.html' with data=question %}
+{% for i in answers %}
+{% include 'answer_card.html' with data=i %}
+{% endfor %}
+<div class="card mb-3 no-border-card">
+    <div class="card-body">
+        <form>
+            <div class="row mb-3">
+
+                <div class="col-sm-12">
+                    <textarea class="form-control" id="inputtext"></textarea>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-outline-primary">Отправить</button>
+        </form>
+    </div>
+</div>
+{%endblock%}

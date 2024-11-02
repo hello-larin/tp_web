@@ -1,0 +1,32 @@
+<div class="card mb-3">
+    <div class="row g-0">
+        <div class="col-md-2">
+            <div class="card-body">
+                <img src="https://www.linux.org.ru/tango/img/opensource-logo.png" class="rounded"
+                    style="max-width:100%; width:4em;">
+                <input class="form-control" type="number">
+            </div>
+
+        </div>
+        <div class="col-md-10">
+            <div class="card-body">
+                <h5 class="card-title"><a href={%url 'question' data.question.id%}>{{data.question.title}}</a></h5>
+                <p class="card-text">{{data.question.text}}</p>
+            </div>
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-md-3">
+                        <a href={% url 'question' data.question.id %} class="btn btn-outline-primary">
+                            Ответов <span class="badge text-bg-primary">{{data.answers_amount}}</span>
+                        </a>
+                    </div>
+                    <div class="col-md-9">
+                        {% for tag in data.question.tags%}
+                        <span class="badge rounded-pill text-bg-primary"><a href={% url 'tag' tag %} class="tag">{{tag}}</a></span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}
+Вопросы
+{% endblock %}
+{% block content %}
+<div class="row">
+    <div class="card mb-3 no-border-card">
+        <div class="card-body">
+            <div class="row align-items-center">
+                {% if hot == True %}
+                <div class="col-md-auto">
+                    <h5 class="card-title">Популярные запросы</h5>
+                </div>
+                <div class="col"><a href={% url 'questions'%}>Новые запросы</a></div>
+                {% else %}
+                <div class="col-md-auto">
+                    <h5 class="card-title">Новые запросы</h5>
+                </div>
+                <div class="col"><a href={% url 'hot'%}>Популярные запросы</a></div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% for i in data %}
+{% include 'catalog_card.html' with data=i %}
+{% endfor %}
+{% include 'paginator.html' with page=page %}
+{%endblock%}

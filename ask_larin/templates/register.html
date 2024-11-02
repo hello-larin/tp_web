@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% block title %}
+Регистрация
+{% endblock %}
+{% block content %}
+<div class="card mb-3 no-border-card">
+    <div class="card-body">
+        <h5 class="card-title">Регистрация</h5>
+        <form>
+            <div class="card border-danger mb-3">
+                <div class="card-body">
+                    <p class="card-text">Пароли не совпадают</p>
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Логин</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputlogin">
+                </div>
+            </fieldset>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Почта</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputemail" type="email">
+                </div>
+            </fieldset>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Имя на сайте</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputnickname">
+                </div>
+            </fieldset>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Пароль</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputpassword" type="password">
+                </div>
+            </fieldset>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Повтор пароля</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputpassword2" type="password">
+                </div>
+            </fieldset>
+            <div class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0"></legend>
+                <div class="col-sm-9">
+                    <img class="rounded" src="https://www.linux.org.ru/tango/img/opensource-logo.png">
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Аватар</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" type="file" id="inputfile">
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-outline-primary">Регистрация</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

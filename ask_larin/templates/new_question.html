@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="card mb-3 no-border-card">
+    <div class="card-body">
+        <h5 class="card-title">Новый запрос</h5>
+        <form>
+            <div class="row mb-3">
+                <label for="inputtitle" class="col-sm-3 col-form-label">Заголовок</label>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputtitle">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="inputtext" class="col-sm-3 col-form-label">Текст</label>
+                <div class="col-sm-9">
+                    <textarea class="form-control" id="inputtext"></textarea>
+                </div>
+            </div>
+            <fieldset class="row mb-3">
+                <legend class="col-form-label col-sm-3 pt-0">Теги</legend>
+                <div class="col-sm-9">
+                    <input class="form-control" id="inputtag">
+                </div>
+            </fieldset>
+            <button type="submit" class="btn btn-outline-primary">Спросить</button>
+        </form>
+    </div>
+</div>
+{% endblock %}
