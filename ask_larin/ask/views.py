@@ -52,19 +52,16 @@ def paginate(objects_list, request, per_page=10):
 def questions_catalog(request):
     question = Question.objects.new_questions()
     page = paginate(question, request)
-    print(page["page"].object_list)
-    for i in page["page"].object_list:
-        print(i.profile.image)
     return render(request, 'index.html', {
         'data': page["page"].object_list,
         'page': page,
-        'login': True
+        'login': True,
+        'new': True
     })
 
 def hot_questions_catalog(request):
     question = Question.objects.hot_questions()
     page = paginate(question, request)
-    print(page["page"].object_list)
     return render(request, 'index.html', {
         'data': page["page"].object_list,
         'page': page,
@@ -74,10 +71,10 @@ def hot_questions_catalog(request):
 def tag(request, tag):
     question = Question.objects.tag_questions(tag)
     page = paginate(question, request)
-    print(page["page"].object_list)
     return render(request, 'index.html', {
         'data': page["page"].object_list,
-        'page': page
+        'page': page,
+        'tag': tag
     })
 
 def question(request, id):
