@@ -22,6 +22,7 @@ class AnswerManager(models.Manager):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, verbose_name="Пользователь", on_delete=models.CASCADE)
+    nickname = models.TextField("Отображаемое имя")
     image = models.ImageField(upload_to='uploads')
     rating = models.IntegerField()
     
@@ -88,6 +89,7 @@ class QuestionLike(models.Model):
     class Meta:
         verbose_name = "Оценка вопроса"
         verbose_name_plural = "Оценки вопросов"
+        unique_together = [["question", "profile"]]
 
     def __str__(self):
         return self.question.title
@@ -106,6 +108,8 @@ class AnswerLike(models.Model):
     class Meta:
         verbose_name = "Оценка ответа"
         verbose_name_plural = "Оценки ответов"
+        unique_together = [["answer", "profile"]]
+
 
     def __str__(self):
         return self.answer.title[:30] + '...'

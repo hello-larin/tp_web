@@ -14,7 +14,7 @@ class Command(BaseCommand):
         ratio = kwargs['ratio']
         
         # Создание пользователей
-        self.stdout.write(self.style.SUCCESS('filled users'))
+        self.stdout.write(self.style.SUCCESS('start filling users'))
         if User.objects.count() < 10000:
             users = [
                 User(
@@ -34,7 +34,7 @@ class Command(BaseCommand):
         else:
             users = User.objects.filter()
         
-        self.stdout.write(self.style.SUCCESS('filled profiles'))
+        self.stdout.write(self.style.SUCCESS('start filling profiles'))
         if Profile.objects.count() < 10000:
             profiles = [
                 Profile(
@@ -48,7 +48,7 @@ class Command(BaseCommand):
         else:
             profiles = list(Profile.objects.filter())
 
-        self.stdout.write(self.style.SUCCESS('filled tags'))
+        self.stdout.write(self.style.SUCCESS('start filling tags'))
         # Создание тегов
         if Tag.objects.count() < 10000:
             tags = [
@@ -60,7 +60,7 @@ class Command(BaseCommand):
             tags = list(Tag.objects.filter())
 
         # Создание вопросов
-        self.stdout.write(self.style.SUCCESS('filled questions'))
+        self.stdout.write(self.style.SUCCESS('start filling questions'))
         questions = []
         
         if Question.objects.count() < 100_000:
@@ -83,7 +83,7 @@ class Command(BaseCommand):
             questions = list(Question.objects.filter())
             
         
-        self.stdout.write(self.style.SUCCESS('filled answers'))
+        self.stdout.write(self.style.SUCCESS('start filling answers'))
         # Создание ответов
         answers = []
         if Answer.objects.count() < 1_000_000:
@@ -102,33 +102,37 @@ class Command(BaseCommand):
         else:
             answers = list(Answer.objects.filter())
         
-        self.stdout.write(self.style.SUCCESS('filled questions likes'))
-        # Создание оценок пользователей
+        self.stdout.write(self.style.SUCCESS('start filling questions likes'))
         if QuestionLike.objects.count() < 100_000:
-            q_likes = [
-                QuestionLike(
-                    profile=random.choice(profiles),
-                    status=random.randint(1, 2),  # Пример рейтинга от 1 до 5
-                    question=random.choice(questions)
-                )
-                for _ in range(ratio * 20)
-            ]
-            QuestionLike.objects.bulk_create(q_likes)
-        else:
-            q_likes = list(QuestionLike.objects.filter())
-        self.stdout.write(self.style.SUCCESS('filled answers likes'))
-        # Массовое создание оценок пользователей
+            unique = set()
+            likes_list = []
+
+            while len(likes_list) < ratio * 200:
+                question = random.choice(questions)
+                profile = random.choice(profiles)
+                if (question, profile) not in unique:
+                    unique.add((question, profile))
+                    likes_list.append( QuestionLike(
+                        status=random.choice([-1, 1]),
+                        profile=profile,
+                        question=question))
+            QuestionLike.objects.bulk_create(likes_list)
+
+        self.stdout.write(self.style.SUCCESS('start filling answer likes'))
+        
+        # Создание лайков/дизлайков на ответы
         if AnswerLike.objects.count() < 1_000_000:
-            a_likes = [
-                AnswerLike(
-                    profile=random.choice(profiles),
-                    status=random.randint(1, 2),  # Пример рейтинга от 1 до 5
-                    answer=random.choice(answers)
-                )
-                for _ in range(ratio * 180)
-            ]
-            # Массовое создание оценок пользователей
-            AnswerLike.objects.bulk_create(a_likes)
-        else:
-            a_likes = list(AnswerLike.objects.filter())
+            unique = set()
+            likes_list = []
+
+            while len(likes_list) < ratio * 180:
+                answer = random.choice(answers)
+                profile = random.choice(profiles)
+                if (answer, profile) not in unique:
+                    unique.add((answer, profile))
+                    likes_list.append( AnswerLike(
+                        status=random.choice([-1, 1]),
+                        profile=profile,
+                        answer=answer))
+            AnswerLike.objects.bulk_create(likes_list)
         self.stdout.write(self.style.SUCCESS('Successfully filled the database with test data'))

@@ -4,26 +4,6 @@ import copy
 from ask.models import *
 from django.db.models import *
 
-questions = []
-for i in range(1,30):
-  questions.append({
-    'title': 'title' + str(i),
-    'id': i,
-    'text': 'text' + str(i),
-    'tags': ['tag'+str(i), 'tag'+str(i+1), 'tag'+str(i+2)]
-  })
-
-answers = []
-for i in range(30):
-    answers.append([])
-    for j in range(5):
-        answers[i].append({
-        'id': i*5 + j,
-        'text': 'text' + str(i*5 + j)
-        })
-
-
-
 def paginate(objects_list, request, per_page=10):
     p = Paginator(objects_list, 10)
     try:
