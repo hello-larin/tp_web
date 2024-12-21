@@ -3,31 +3,13 @@
 <div class="card mb-3 no-border-card">
     <div class="card-body">
         <h5 class="card-title">Новый запрос</h5>
-        <div class="card border-danger mb-3">
-            <div class="card-body">
-                <p class="card-text">Нет заголовка вопроса</p>
-            </div>
-        </div>
-        <form>
-            <div class="row mb-3">
-                <label for="inputtitle" class="col-sm-3 col-form-label">Заголовок</label>
-                <div class="col-sm-9">
-                    <input class="form-control" id="inputtitle">
-                </div>
-            </div>
-            <div class="row mb-3">
-                <label for="inputtext" class="col-sm-3 col-form-label">Текст</label>
-                <div class="col-sm-9">
-                    <textarea class="form-control" id="inputtext"></textarea>
-                </div>
-            </div>
-            <fieldset class="row mb-3">
-                <legend class="col-form-label col-sm-3 pt-0">Теги</legend>
-                <div class="col-sm-9">
-                    <input class="form-control" id="inputtag">
-                </div>
-            </fieldset>
-            <button type="submit" class="btn btn-outline-primary">Спросить</button>
+        {% load django_bootstrap5 %}
+        <form action="{% url 'new_question' %}?next={{ next_url }}" method="POST" class="form">
+        {% csrf_token %}
+
+        {% bootstrap_form form %}
+
+        {% bootstrap_button button_type="submit" content="Задать" %}
         </form>
     </div>
 </div>

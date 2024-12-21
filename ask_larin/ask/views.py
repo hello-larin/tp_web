@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
-import copy
 from ask.models import *
 from django.db.models import *
+
+from .forms import *
+from django.contrib import auth
+from django.contrib.auth.decorators import login_required
+from django.urls import reverse
+
 
 def paginate(objects_list, request, per_page=10):
     p = Paginator(objects_list, 10)
@@ -60,20 +65,80 @@ def tag(request, tag):
 def question(request, id):
     answers = Answer.objects.question_answers(id)
     question = Question.objects.get(id=id)
+    form = AnswerForm()
     return render(request, 'question.html', {
         'title': question.title,
         'question': question,
-        'answers': answers
+        'answers': answers,
+        'form': form
+    })
+    
+def answer(request, id):
+    question = get_object_or_404(Question, id=id)
+    answers = Answer.objects.question_answers(id)
+    form = AnswerForm()
+    if request.method == 'POST':
+        form = AnswerForm(request.POST)
+        print(form.is_valid())
+        if form.is_valid():
+            profile = Profile.objects.get(user=request.user)
+            form.save(profile=profile, question=question)
+            form = AnswerForm()
+    return render(request, 'question.html', {
+        'title': question.title,
+        'question': question,
+        'answers': answers,
+        'form': form
     })
 
 def login(request):
-    return render(request, 'login.html')
+    next_url = request.GET.get('next', reverse('questions'))
+    form = LoginForm()
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user:
+                auth.login(request, user)
+                return redirect(next_url)
+            else:
+                form.add_error(None, 'Неверный логин или пароль')
+    return render(request, 'login.html', {
+        'form': form,
+        'next_url': next_url
+    })
 
 def settings(request):
-    return render(request, 'setting.html', {'login': True})
+    form = SettingsForm(instance=request.user)
+    if request.method == 'POST':
+        form = SettingsForm(request.POST, request.FILES, instance=request.user)
+        if form.is_valid():
+            user = form.save()  
+    return render(request, 'setting.html', {'form': form})
+
+def logout(request):
+    auth.logout(request)
+    current_url = request.META.get('HTTP_REFERER', '/')
+    return redirect(current_url)
 
 def register(request):
-    return render(request, 'register.html')
+    form = RegisterForm()
+    if request.method == 'POST':
+        form = RegisterForm(request.POST, request.FILES)
+        if form.is_valid():
+            user = form.save()
+            user = auth.authenticate(request, **form.cleaned_data)
+            if user is not None:
+                auth.login(request, user)
+                return redirect(reverse('questions'))
+    return render(request, 'register.html', {'form': form})
 
 def new_question(request):
-    return render(request, 'new_question.html')
+    form = QuestionForm()
+    if request.method == 'POST':
+        form = QuestionForm(request.POST)
+        if form.is_valid():
+            profile = Profile.objects.get(user=request.user)
+            question = form.save(profile=profile)
+            return redirect('question',question.id)
+    return render(request, 'new_question.html', {'form': form})

@@ -22,9 +22,8 @@ class AnswerManager(models.Manager):
 
 class Profile(models.Model):
     user = models.OneToOneField(User, verbose_name="Пользователь", on_delete=models.CASCADE)
-    nickname = models.TextField("Отображаемое имя")
+    nickname = models.CharField("Отображаемое имя", max_length=150)
     image = models.ImageField(upload_to='uploads')
-    rating = models.IntegerField()
     
     class Meta:
         verbose_name = "Профиль"
@@ -45,11 +44,11 @@ class Tag(models.Model):
         return self.name
 
 class Question(models.Model):
-    title = models.TextField("Заголовок")
+    title = models.CharField("Заголовок", max_length=150)
     description = models.TextField("Содержание")
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE, related_name='questions')
     created_date = models.DateField("Дата создания", auto_now=False, auto_now_add=True)
-    rating = models.IntegerField("Рейтинг")
+    rating = models.IntegerField("Рейтинг", default=0)
     tags = models.ManyToManyField(Tag, verbose_name="Теги")
     objects = QuestionManager()
     
@@ -65,8 +64,8 @@ class Answer(models.Model):
     description = models.TextField("Ответ")
     profile = models.ForeignKey(Profile, verbose_name="Автор", on_delete=models.CASCADE)
     created_date = models.DateField("Дата создания", auto_now=False, auto_now_add=True)
-    correct = models.BooleanField("Правильный ответ")
-    rating = models.IntegerField("Рейтинг")
+    correct = models.BooleanField("Правильный ответ", default=False)
+    rating = models.IntegerField("Рейтинг", default=0)
     objects = AnswerManager()
 
     class Meta:
@@ -113,6 +112,5 @@ class AnswerLike(models.Model):
 
     def __str__(self):
         return self.answer.title[:30] + '...'
-
 
 

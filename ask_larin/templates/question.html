@@ -9,14 +9,13 @@ title
 {% endfor %}
 <div class="card mb-3 no-border-card">
     <div class="card-body">
-        <form>
-            <div class="row mb-3">
-
-                <div class="col-sm-12">
-                    <textarea class="form-control" id="inputtext"></textarea>
-                </div>
-            </div>
-            <button type="submit" class="btn btn-outline-primary">Отправить</button>
+        {% load django_bootstrap5 %}
+        <form action="{% url 'answer' question.id %}" method="POST" class="form">
+            {% csrf_token %}
+        
+            {% bootstrap_form form %}
+        
+            {% bootstrap_button button_type="submit" content="Ответить" %}
         </form>
     </div>
 </div>

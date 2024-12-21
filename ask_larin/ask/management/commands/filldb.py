@@ -39,8 +39,7 @@ class Command(BaseCommand):
             profiles = [
                 Profile(
                     user=users[i],
-                    image = f'avatars/avatars7x7/avatar_{i}.png',
-                    rating=random.randint(1, 100)
+                    image = f'avatars/avatars7x7/avatar_{i}.png'
                 )
                 for i in range(ratio)
             ]
