@@ -1,0 +1,43 @@
+upstream ask_larin {
+    server 127.0.0.1:8000;
+}
+
+proxy_cache_path /Users/User/Documents/3 курс/технопарк/tp_web/ask_larin/cache levels=1:2 keys_zone=ask_larin_zone:10m inactive=24h max_size=50m;
+
+server {
+    listen 80 default_server;
+    server_name localhost;
+
+    error_log /Users/User/Documents/3 курс/технопарк/tp_web/ask_larin/ask_larin_error.log;
+    access_log /Users/User/Documents/3 курс/технопарк/tp_web/ask_larin/ask_larin_access.log;
+
+    # Сжатие файлов
+    gzip on;
+    gzip_types text/plain application/javascript text/css image/jpeg image/png image/svg+xml image/webp application/json;
+    gzip_min_length 256;
+
+    # Статические файлы
+    location ~* \.(js|css|jpg|jpeg|png|svg|ico|webp)$ {
+        root /Users/User/Documents/3 курс/технопарк/tp_web/ask_larin/static;
+        expires max;
+        add_header Cache-Control public;
+    }
+
+    # Загруженные файлы
+    location /uploads/ {
+        root /Users/User/Documents/3 курс/технопарк/tp_web/ask_larin/media;
+        expires max;
+        add_header Cache-Control public;
+    }
+
+    # Обработка запросов к приложению
+    location / {
+        proxy_pass http://ask_larin;
+        proxy_set_header Host $host;
+
+        proxy_cache ask_larin_zone;
+        proxy_cache_valid 200 302 10m;
+        proxy_cache_valid 404 1m;
+        add_header X-Cache-Status $upstream_cache_status;
+    }
+}
