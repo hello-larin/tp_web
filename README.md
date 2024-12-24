@@ -5,3 +5,5 @@
 [Отчёт по 2 ДЗ](./2lab_report.md)
 
 [Отчёт по 3 ДЗ](./3lab_report.md)
+
+[Отчёт по 4 ДЗ](./4lab_report.md)
