@@ -93,7 +93,6 @@ class QuestionLike(models.Model):
     status = models.IntegerField("Статус", choices=STATUS_CHOICES, default=1)
     question = models.ForeignKey(Question, verbose_name="Вопрос", on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE)
-    objects = QuestionLikesManager()
 
     class Meta:
         verbose_name = "Оценка вопроса"
@@ -112,7 +111,6 @@ class AnswerLike(models.Model):
     status = models.IntegerField("Статус", choices=STATUS_CHOICES, default=1)
     answer = models.ForeignKey(Answer, verbose_name="Ответ", on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE)
-    objects = AnswerLikesManager()
     
 
     class Meta:
