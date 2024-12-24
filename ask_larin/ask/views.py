@@ -1,3 +1,5 @@
+import json
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.core.paginator import Paginator
 from ask.models import *
@@ -72,7 +74,8 @@ def question(request, id):
         'answers': answers,
         'form': form
     })
-    
+
+@login_required(login_url='login')
 def answer(request, id):
     question = get_object_or_404(Question, id=id)
     answers = Answer.objects.question_answers(id)
@@ -108,6 +111,7 @@ def login(request):
         'next_url': next_url
     })
 
+@login_required(login_url='login')
 def settings(request):
     form = SettingsForm(instance=request.user)
     if request.method == 'POST':
@@ -133,6 +137,7 @@ def register(request):
                 return redirect(reverse('questions'))
     return render(request, 'register.html', {'form': form})
 
+@login_required(login_url='login')
 def new_question(request):
     form = QuestionForm()
     if request.method == 'POST':

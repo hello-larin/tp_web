@@ -1,20 +1,22 @@
 from django.db import models
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Sum, F, Count, Q
+from django.db.models.functions import Coalesce
+
 # Create your models here.
 
 class QuestionManager(models.Manager):
+    def get_question(self, id):
+        return self.get(id=id)
+
     def new_questions(self):
-        """Выбрать все вопросы и количество ответов к ним."""
-        return self.annotate(answer_count=Count('answers')).order_by('-id')
+        return self.order_by('-id')
 
     def hot_questions(self):
-        """Выбрать популярные вопросы, отсортированные по рейтингу, и количество ответов к ним."""
-        return self.annotate(answer_count=Count('answers')).order_by('-rating')
+        return self.annotate(rating=Coalesce(Sum("questionlike__status"), 0)).order_by('-rating')
 
     def tag_questions(self, tag_name):
-        """Выбрать вопросы с указанным тегом и количество ответов к ним."""
-        return self.filter(tags__name=tag_name).annotate(answer_count=Count('answers')).order_by('-id')
+        return self.filter(tags__name=tag_name).order_by('-id')
 
 class AnswerManager(models.Manager):
     def question_answers(self, id):
@@ -48,9 +50,14 @@ class Question(models.Model):
     description = models.TextField("Содержание")
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE, related_name='questions')
     created_date = models.DateField("Дата создания", auto_now=False, auto_now_add=True)
-    rating = models.IntegerField("Рейтинг", default=0)
     tags = models.ManyToManyField(Tag, verbose_name="Теги")
     objects = QuestionManager()
+    
+    def answer_count(self):
+        return Answer.objects.filter(question=self).count()
+    
+    def rating(self):
+        return self.questionlike_set.aggregate(rating=models.Sum('status'))['rating'] or 0
     
     class Meta:
         verbose_name = "Вопрос"
@@ -65,8 +72,10 @@ class Answer(models.Model):
     profile = models.ForeignKey(Profile, verbose_name="Автор", on_delete=models.CASCADE)
     created_date = models.DateField("Дата создания", auto_now=False, auto_now_add=True)
     correct = models.BooleanField("Правильный ответ", default=False)
-    rating = models.IntegerField("Рейтинг", default=0)
     objects = AnswerManager()
+    
+    def rating(self):
+        return self.answerlike_set.aggregate(rating=models.Sum('status'))['rating'] or 0
 
     class Meta:
         verbose_name = "Ответ"
@@ -81,9 +90,10 @@ class QuestionLike(models.Model):
         (1, "Нравится"),
         (-1, "Не нравится")
     )
-    status = models.IntegerField("Статус", choices=STATUS_CHOICES)
+    status = models.IntegerField("Статус", choices=STATUS_CHOICES, default=1)
     question = models.ForeignKey(Question, verbose_name="Вопрос", on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE)
+    objects = QuestionLikesManager()
 
     class Meta:
         verbose_name = "Оценка вопроса"
@@ -99,9 +109,10 @@ class AnswerLike(models.Model):
         (1, "Нравится"),
         (-1, "Не нравится")
     )
-    status = models.IntegerField("Статус", choices=STATUS_CHOICES)
+    status = models.IntegerField("Статус", choices=STATUS_CHOICES, default=1)
     answer = models.ForeignKey(Answer, verbose_name="Ответ", on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, verbose_name="Профиль", on_delete=models.CASCADE)
+    objects = AnswerLikesManager()
     
 
     class Meta:

@@ -136,17 +136,18 @@ class SettingsForm(forms.ModelForm):
         return data
 
     def save(self, commit=True):
+        print(self.cleaned_data)
         user = super().save(commit=False)
         
         if commit:
             user.save()
 
-        if 'avatar' in self.cleaned_data:
+        if 'avatar' in self.cleaned_data and self.cleaned_data['avatar'] != None:
             profile = Profile.objects.get(user=user)
             profile.image = self.cleaned_data['avatar']
             profile.save()
         
-        if 'nickname' in self.cleaned_data:
+        if 'nickname' in self.cleaned_data and self.cleaned_data['nickname'] != None:
             profile = Profile.objects.get(user=user)
             profile.nickname = self.cleaned_data['nickname']
             profile.save()

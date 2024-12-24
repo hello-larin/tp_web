@@ -8,7 +8,7 @@
     {% load django_bootstrap5 %}
     <div class="card-body">
         <h5 class="card-title">Настройка аккаунта {{ user.username }}</h5>
-        <form action="{% url 'settings' %}" method="POST" class="form">
+        <form action="{% url 'settings' %}" method="POST" class="form" enctype="multipart/form-data">
             {% csrf_token %}
         
             {% bootstrap_form form %}
