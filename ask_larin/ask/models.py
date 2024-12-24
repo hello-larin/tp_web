@@ -22,6 +22,24 @@ class AnswerManager(models.Manager):
     def question_answers(self, id):
         return self.filter(question__id=id).order_by('id')
 
+class QuestionLikesManager(models.Manager):
+    def like(self, question_id, user, rating):
+        profile = Profile.objects.get(user=user)
+        question = Question.objects.get(id = question_id)
+        question_like, created = self.get_or_create(question=question, profile=profile)
+        question_like.status = rating
+        question_like.save()
+        return question.rating()  # Возвращаем новый рейтинг вопроса
+
+class AnswerLikesManager(models.Manager):    
+    def like(self, answer_id, user, rating):
+        profile = Profile.objects.get(user=user)
+        answer = Answer.objects.get(id = answer_id)
+        answer_like, created = self.get_or_create(answer=answer, profile=profile)
+        answer_like.status = rating
+        answer_like.save()
+        return answer.rating()
+
 class Profile(models.Model):
     user = models.OneToOneField(User, verbose_name="Пользователь", on_delete=models.CASCADE)
     nickname = models.CharField("Отображаемое имя", max_length=150)

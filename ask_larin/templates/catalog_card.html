@@ -1,13 +1,15 @@
 {% load static %}
 
-<div class="card mb-3">
+<div class="card mb-3 card_tp question" data-id="{{data.id}}">
     <div class="row g-0">
         <div class="col-md-2">
             <div class="card-body">
                 <img src="{{ data.profile.image.url }}" class="rounded"
                     style="max-width:100%; width:4em;">
-                <input class="form-control" type="number" value="{{data.rating}}">
-                <p>{{data.profile.user.username}}</p>
+                    <p>{{data.profile.user.username}}</p>
+                    <button class="btn btn-primary like btn-sm">+</button>
+                    <span class="rating">{{data.rating}}</span>
+                    <button class="btn btn-primary dislike btn-sm">-</button>
             </div>
 
         </div>

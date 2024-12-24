@@ -5,7 +5,7 @@ title
 {% block content %}
 {% include 'question_card.html' with data=question %}
 {% for i in answers %}
-{% include 'answer_card.html' with data=i %}
+{% include 'answer_card.html' with data=i question_creator=question.profile.user%}
 {% endfor %}
 <div class="card mb-3 no-border-card">
     <div class="card-body">

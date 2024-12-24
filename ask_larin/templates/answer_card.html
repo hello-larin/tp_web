@@ -7,23 +7,38 @@
                 <img src="{{ data.profile.image.url }}" class="rounded"
                     style="max-width:100%; width:5em;">
                     <p>{{data.profile.user.username}}</p>
-                <input class="form-control" type="number" value="{{data.rating}}">
+                    <button class="btn btn-primary like btn-sm">+</button>
+                    <span class="rating">{{data.rating}}</span>
+                    <button class="btn btn-primary dislike btn-sm">-</button>
             </div>
         </div>
         <div class="col-md-10">
             <div class="card-body">
                 <p class="card-text">{{data.description}}</p>
             </div>
+            {% if question_creator == request.user %}
             <div class="card-footer">
                 {% if data.correct == True %}
-                <input class="form-check-input" type="checkbox" id="correct1" checked>
+                <input class="form-check-input find-checkbox" type="checkbox" id="correct1" checked>
                 {% else %}
-                <input class="form-check-input" type="checkbox" id="correct1">
+                <input class="form-check-input find-checkbox" type="checkbox" id="correct1">
                 {% endif %}
                 <label class="form-check-label" for="correct1">
                     Правильно
                 </label>
             </div>
+            {% else %}
+            <div class="card-footer">
+                {% if data.correct == True %}
+                <input class="form-check-input" type="checkbox" id="correct1" checked disabled>
+                {% else %}
+                <input class="form-check-input" type="checkbox" id="correct1" disabled>
+                {% endif %}
+                <label class="form-check-label" for="correct1">
+                    Правильно
+                </label>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

@@ -147,3 +147,41 @@ def new_question(request):
             question = form.save(profile=profile)
             return redirect('question',question.id)
     return render(request, 'new_question.html', {'form': form})
+
+def question_like(request, id):
+    try:
+        data = json.loads(request.body)
+        print("data loaded")
+    except:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    user = request.user
+    if user == None:
+        return JsonResponse({"error": "No auth"}, status=400)
+    rating = QuestionLike.objects.like(id, user, data["rating"])
+    print("RATING: ", rating)
+    return JsonResponse({"rating" : rating})
+
+
+def answer_like(request, id):
+    try:
+        data = json.loads(request.body)
+        print("data loaded")
+    except:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    
+    user = request.user
+    if user == None:
+        return JsonResponse({"error": "No auth"}, status=400)
+    print(id, user, data["rating"])
+    rating = AnswerLike.objects.like(id, user, data["rating"])
+    return JsonResponse({"rating" : rating})
+
+def correct_answer(request, id):
+    user = request.user
+    answer = Answer.objects.get(id=id)
+    creator = answer.question.profile.user
+    if user != creator:
+        return JsonResponse({"error": "No question author"}, status=400)
+    answer.correct = not answer.correct
+    answer.save()
+    return JsonResponse({"status": "OK"}, status=200)
