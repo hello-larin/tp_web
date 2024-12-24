@@ -151,28 +151,24 @@ def new_question(request):
 def question_like(request, id):
     try:
         data = json.loads(request.body)
-        print("data loaded")
     except:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     user = request.user
     if user == None:
         return JsonResponse({"error": "No auth"}, status=400)
     rating = QuestionLike.objects.like(id, user, data["rating"])
-    print("RATING: ", rating)
     return JsonResponse({"rating" : rating})
 
 
 def answer_like(request, id):
     try:
         data = json.loads(request.body)
-        print("data loaded")
     except:
         return JsonResponse({"error": "Invalid JSON"}, status=400)
     
     user = request.user
     if user == None:
         return JsonResponse({"error": "No auth"}, status=400)
-    print(id, user, data["rating"])
     rating = AnswerLike.objects.like(id, user, data["rating"])
     return JsonResponse({"rating" : rating})
 
