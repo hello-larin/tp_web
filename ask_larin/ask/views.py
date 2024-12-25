@@ -65,8 +65,8 @@ def tag(request, tag):
     })
 
 def question(request, id):
+    question = get_object_or_404(Question, id=id)
     answers = Answer.objects.question_answers(id)
-    question = Question.objects.get(id=id)
     form = AnswerForm()
     return render(request, 'question.html', {
         'title': question.title,

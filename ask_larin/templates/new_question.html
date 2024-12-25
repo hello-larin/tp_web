@@ -4,7 +4,7 @@
     <div class="card-body">
         <h5 class="card-title">Новый запрос</h5>
         {% load django_bootstrap5 %}
-        <form action="{% url 'new_question' %}?next={{ next_url }}" method="POST" class="form">
+        <form action="{% url 'new_question' %}" method="POST" class="form">
         {% csrf_token %}
 
         {% bootstrap_form form %}
