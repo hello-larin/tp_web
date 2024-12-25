@@ -1,0 +1,10 @@
+<li class="list-group-item">
+    <div class="card-body">
+        <h5 class="card-title">Популярные теги</h5>
+        <p class="card-text">
+            {% for tag in tags %}
+                <a href="{% url 'tag' tag.name %}" class="card-link">{{ tag.name }}</a>
+            {% endfor %}
+        </p>
+    </div>
+</li>

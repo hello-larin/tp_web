@@ -25,6 +25,12 @@
                 </div>
                 <div class="col"><a href={% url 'questions'%}>Новые запросы</a></div>
                 {% endif %}
+                {% if search != None %}
+                <div class="col-md-auto">
+                    <h5 class="card-title">Результаты поиска: {{search}}</h5>
+                </div>
+                <div class="col"><a href={% url 'questions'%}>Новые запросы</a></div>
+                {% endif %}
             </div>
         </div>
     </div>

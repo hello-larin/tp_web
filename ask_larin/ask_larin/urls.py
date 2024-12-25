@@ -34,6 +34,7 @@ urlpatterns = [
     path('question_like/<int:id>', views.question_like, name='question_like'),
     path('answer_like/<int:id>', views.answer_like, name='answer_like'),
     path('logout', views.logout, name='logout'),
+    path('search', views.search, name='search'),
     path('answer_correct/<int:id>', views.correct_answer, name='answer_correct')
 ]
 

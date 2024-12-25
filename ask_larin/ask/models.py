@@ -17,6 +17,11 @@ class QuestionManager(models.Manager):
 
     def tag_questions(self, tag_name):
         return self.filter(tags__name=tag_name).order_by('-id')
+    
+    def search(self, text):
+        return self.filter(
+            Q(title__icontains=text) | Q(description__icontains=text)
+        )
 
 class AnswerManager(models.Manager):
     def question_answers(self, id):
@@ -40,10 +45,21 @@ class AnswerLikesManager(models.Manager):
         answer_like.save()
         return answer.rating()
 
+class TagManager(models.Manager):
+    def popular_tags(self, limit=10):
+        return self.annotate(amount=Count('question')).order_by('-amount')[:limit]
+
+class ProfileManager(models.Manager):
+    def popular_users(self, limit=10):
+        return self.annotate(
+            rating=Coalesce(Sum('questions__questionlike__status'), 0) - Coalesce(Sum('answer__answerlike__status'), 0)
+        ).order_by('-rating')[:limit]
+
 class Profile(models.Model):
     user = models.OneToOneField(User, verbose_name="Пользователь", on_delete=models.CASCADE)
     nickname = models.CharField("Отображаемое имя", max_length=150)
     image = models.ImageField(upload_to='uploads')
+    objects = ProfileManager()
     
     class Meta:
         verbose_name = "Профиль"
@@ -52,9 +68,9 @@ class Profile(models.Model):
     def __str__(self):
         return self.user.username
 
-
 class Tag(models.Model):
     name = models.CharField(verbose_name="Название", max_length=100)
+    objects = TagManager()
     
     class Meta:
         verbose_name = "Тег"

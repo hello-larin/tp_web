@@ -42,7 +42,6 @@ def questions_catalog(request):
     return render(request, 'index.html', {
         'data': page["page"].object_list,
         'page': page,
-        'login': True,
         'new': True
     })
 
@@ -181,3 +180,15 @@ def correct_answer(request, id):
     answer.correct = not answer.correct
     answer.save()
     return JsonResponse({"status": "OK"}, status=200)
+
+def search(request):
+    text = request.POST.get('text', '')
+    print("TEXT", text)
+    print("POST", request.POST)
+    question = Question.objects.search(text)
+    page = paginate(question, request)
+    return render(request, 'index.html', {
+        'data': page["page"].object_list,
+        'page': page,
+        'search': text
+    })

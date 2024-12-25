@@ -17,10 +17,19 @@
                 <a href={% url 'questions'%} class="navbar-brand">AskLarin</a>
             </div>
             <div class="col">
-                <form action="" class="input-group">
-                    <input type="search" class="search-input form-control mb-auto" placeholder="Questions, tags, users">
+                {% if search != None %}
+                <form action="{% url 'search' %}" method="POST" class="input-group">
+                    {% csrf_token %}
+                    <input type="search" name="text" class="search-input form-control mb-auto" placeholder="Question title or description">
                     <button class="btn btn-outline-primary" type="submit" id="button-addon2">Искать</button>
                 </form>
+                {% else %}
+                <form action="{% url 'search' %}" method="POST" class="input-group">
+                    {% csrf_token %}
+                    <input type="search" name="text" class="search-input form-control mb-auto" placeholder="Question title or description" value="{{search}}">
+                    <button class="btn btn-outline-primary" type="submit" id="button-addon2">Искать</button>
+                </form>
+                {% endif %}
             </div>
             <div class="col-auto">
                 <a class="btn btn-outline-primary" href={%url 'new_question'%}>Задать вопрос</a>
@@ -59,36 +68,9 @@
             <div class="col-sm-4">
                 <div class="card no-border-card">
                     <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-                            <div class="card-body">
-                                <h5 class="card-title">Популярные теги</h5>
-                                <p class="card-text">
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                    <a href="#" class="card-link">Card link</a>
-                                    <a href="#" class="card-link">Another link</a>
-                                </p>
-                            </div>
-                
-                        </li>
-                        <li class="list-group-item">
-                            <div class="card-body">
-                                <h5 class="card-title">Лучшие пользователи</h5>
-                            </div>
-                            <ul class="list-group list-group-flush">
-                                <li class="list-group-item"><a href="#">An item</a></li>
-                                <li class="list-group-item"><a href="#">A second item</a></li>
-                                <li class="list-group-item"><a href="#">A third item</a></li>
-                            </ul>
-                        </li>
+                        {% load popular_data %}
+                        {% tags %}
+                        {% users %}
                     </ul>
                 </div>
             </div>

@@ -1,0 +1,12 @@
+<li class="list-group-item">
+    <div class="card-body">
+        <h5 class="card-title">Лучшие пользователи</h5>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for user in users %}
+            <li class="list-group-item">
+                {{ user.user.username }}
+            </li>
+        {% endfor %}
+    </ul>
+</li>
